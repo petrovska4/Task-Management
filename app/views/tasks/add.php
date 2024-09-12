@@ -9,7 +9,7 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
   </div>
   <div class="modal-body">
-    <form method="post" action="add.php">
+    <form method="post" action="index.php">
       <div class="form-group">
         <label>Task Name</label>
         <input type="text" required name="task" class="form-control">
