@@ -1,8 +1,11 @@
 <?php
-require('database.php');  // Assuming you have a file to connect to the database
-require('task_model.php');  // Including the model file you shared
+// require('../../models/db.php');  // Assuming you have a file to connect to the database
+require('../../models/task.php');  // Including the model file you shared
+include '../../models/db.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add_task') {
+// if ($_POST['action'] === 'add') {
+if (isset($_POST['add'])) {
+    echo "success";
     $title = $_POST['task'];
     $description = $_POST['description'];
     $due_date = $_POST['due'];
@@ -15,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
     add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
 
-    header("Location: ../index.php");
-    exit;
+    // header("Location: ../index.php");
+    // exit;
 }
 ?>

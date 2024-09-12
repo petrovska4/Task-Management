@@ -1,8 +1,3 @@
-<?php  // ova treba da ide vo index.php
-
-
-?>
-
 <div class="modal-content">
   <div class="modal-header">
     <h4 class="modal-title">Add task</h4>
