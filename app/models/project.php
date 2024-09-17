@@ -27,13 +27,13 @@ function add_project($name, $description, $created_by) {
   $query = 'INSERT INTO project
               (name, description, created_by)
             VALUES
-              (:name, :description, :created_by)';
+              (?, ?, ?)';
   $statement = $db->prepare($query);
-  $statement->bindValue(':name', $name);
-  $statement->bindValue(':description', $description);
-  $statement->bindValue(':created_by', $created_by);
+
+  $statement->bind_param('ssi', $name, $description, $created_by);
+
   $statement->execute();
-  $statement->closeCursor();
+  $statement->close();
 }
 
 ?>

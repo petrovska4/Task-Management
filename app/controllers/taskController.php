@@ -9,7 +9,6 @@ $action = filter_input(INPUT_POST, 'action');
 // }
 
 if($action == 'add') {
-    echo "success";
     $title = $_POST['task'];
     $description = $_POST['description'];
     $due_date = $_POST['due'];
@@ -22,8 +21,13 @@ if($action == 'add') {
 
     add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
 
-    echo "Task successfully added!";
     header("Location: ../views/tasks/index.php");
 
+} elseif($action == 'delete') {
+    $id = $_POST['id'];
+
+    delete_task($id);
+
+    header("Location: ../views/tasks/index.php");
 } else echo "fail";
 ?>

@@ -10,13 +10,10 @@ $rows = $db->query($sql);
 
 <div class="container">
   <div class="column">
-    <h1>Tasks</h1>
-
     <div class="row" style="margin-top: 70px;">
       <div class="col-md-10 col-md-offset-1">
         <table class="table">
           <button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>
-          <button type="button" class="btn btn-default">Print</button>
           <hr>
           <p>filteri</p>
 
@@ -57,7 +54,13 @@ $rows = $db->query($sql);
                   <td scope="row"><?php echo $row['assigned_to'] ?></td>
                   <td scope="row"><?php echo $row['created_at'] ?></td>
                   <td><a href="" class="btn btn-success">Edit</a></td>
-                  <td><a href="" class="btn btn-danger">Delete</a></td>
+                  <td>
+                    <form action="../../controllers/taskController.php" method="POST">
+                      <input type="hidden" name="action" value="delete">
+                      <input type="hidden" name="id" value="<?php echo $row['id'];?>">
+                      <input type="submit" class="btn btn-danger" value="Delete">
+                    </form>
+                  </td>
                 </tr>
               <?php endwhile; ?>
             </tbody>
