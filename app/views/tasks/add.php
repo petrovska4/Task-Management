@@ -4,7 +4,8 @@
     <button type="button" class="close" data-dismiss="modal">&times;</button>
   </div>
   <div class="modal-body">
-    <form method="post" action="index.php">
+    <form method="POST" action="../../controllers/taskController.php">
+      <input type="hidden" name="action" value="add">
       <div class="form-group">
         <label>Task Name</label>
         <input type="text" required name="task" class="form-control">
@@ -15,7 +16,7 @@
         <label>Project</label>
         <input type="text" required name="project" class="form-control">
         <label>Assign to</label>
-        <input type="text" required name="assign" class="form-control">
+        <input type="text" required name="assigned_to" class="form-control">
       </div>
       <input type="submit" name="add" value="Add task" class="btn btn-success">
     </form>

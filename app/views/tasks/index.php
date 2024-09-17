@@ -1,24 +1,70 @@
-<?php
-// require('../../models/db.php');  // Assuming you have a file to connect to the database
-require('../../models/task.php');  // Including the model file you shared
-include '../../models/db.php';
+<?php include '../../models/db.php';
 
-// if ($_POST['action'] === 'add') {
-if (isset($_POST['add'])) {
-    echo "success";
-    $title = $_POST['task'];
-    $description = $_POST['description'];
-    $due_date = $_POST['due'];
-    $project_id = $_POST['project'];
-    $assigned_to = $_POST['assign'];
+$sql = "select * from task";
 
-    $status = 'Pending';  // Default status (you can modify this as needed)
-    $priority = 'Normal'; // Default priority
-    $created_by = 1;  // Assuming a fixed user ID for "created_by", adjust this based on your app's logic
+$rows = $db->query($sql);
 
-    add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
-
-    // header("Location: ../index.php");
-    // exit;
-}
 ?>
+
+<?php include '../header.php'; ?>
+
+<div class="container">
+  <div class="column">
+    <h1>Tasks</h1>
+
+    <div class="row" style="margin-top: 70px;">
+      <div class="col-md-10 col-md-offset-1">
+        <table class="table">
+          <button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>
+          <button type="button" class="btn btn-default">Print</button>
+          <hr>
+          <p>filteri</p>
+
+          <div id="addTask" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <?php include 'add.php'; ?>
+            </div>
+          </div>
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Status</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Due date</th>
+                <th scope="col">Project</th>
+                <th scope="col">Created by</th>
+                <th scope="col">Assigned to</th>
+                <th scope="col">Created at</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while($row = $rows->fetch_assoc()): ?>
+                <tr>
+                  <td scope="row"><?php echo $row['id'] ?></td>
+                  <td class="col-md-10"><?php echo $row['title'] ?></td>
+                  <td class="col-md-10"><?php echo $row['description'] ?></td>
+                  <td scope="row"><?php echo $row['status'] ?></td>
+                  <td scope="row"><?php echo $row['priority'] ?></td>
+                  <td scope="row"><?php echo $row['due_date'] ?></td>
+                  <td scope="row"><?php echo $row['project_id'] ?></td>
+                  <td scope="row"><?php echo $row['created_by'] ?></td>
+                  <td scope="row"><?php echo $row['assigned_to'] ?></td>
+                  <td scope="row"><?php echo $row['created_at'] ?></td>
+                  <td><a href="" class="btn btn-success">Edit</a></td>
+                  <td><a href="" class="btn btn-danger">Delete</a></td>
+                </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<?php include '../footer.php'; ?>
