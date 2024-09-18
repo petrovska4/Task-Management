@@ -3,23 +3,45 @@
 function get_project($project_id) {
   global $db;
   $query = 'SELECT * FROM project
-            WHERE id = :id';
+            WHERE id = ?';
   $statement = $db ->prepare($query);
-  $statement->bindValue(":id", $project_id);
+
+  $statement->bind_param("i", $project_id);
+
   $statement->execute();
   $project = $statement->fetch();
   $statement->closeCursor();
+
   return $project;
+}
+
+function get_tasks_by_project($project_id) {
+  global $db;
+  $query = 'SELECT * FROM task 
+            WHERE project_id = ?';
+  $statement = $db->prepare($query);
+
+  $statement->bind_param('i', $project_id);
+
+  $statement->execute();
+  $result = $statement->get_result();
+  $tasks = $result->fetch_all(MYSQLI_ASSOC);
+
+  $statement->close();
+
+  return $tasks;
 }
 
 function delete_project($project_id) {
   global $db;
   $query = 'DELETE FROM project
-            WHERE id = :id';
+            WHERE id = ?';
   $statement = $db->prepare($query);
-  $statement->bindValue(':id', $project_id);
+
+  $statement->bind_param('i', $project_id);
+
   $statement->execute();
-  $statement->closeCursor();
+  $statement->close();
 }
 
 function add_project($name, $description, $created_by) {

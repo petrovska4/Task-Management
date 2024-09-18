@@ -3,12 +3,15 @@
 function get_task($task_id) {
     global $db;
     $query = 'SELECT * FROM task
-                WHERE id = :id';
+                WHERE id = ?';
     $statement = $db->prepare($query);
-    $statement->bindValue(":id", $task_id);
+
+    $statement->bind_param("i", $task_id);
+
     $statement->execute();
     $task = $statement->fetch();
-    $statement->closeCursor();
+    $statement->close();
+    
     return $task;
 }
 

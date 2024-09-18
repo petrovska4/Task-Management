@@ -11,7 +11,7 @@ $action = filter_input(INPUT_POST, 'action');
 if($action == 'add') {
     $title = $_POST['task'];
     $description = $_POST['description'];
-    $due_date = $_POST['due'];
+    $due_date = $_POST['due_date'];
     $project_id = $_POST['project'];
     $assigned_to = $_POST['assigned_to'];
 

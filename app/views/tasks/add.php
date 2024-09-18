@@ -12,7 +12,7 @@
         <label>Description</label>
         <input type="text" required name="description" class="form-control">
         <label>Due date</label>
-        <input type="text" required name="due" class="form-control">
+        <input type="datetime-local" required name="due_date" class="form-control">
         <label>Project</label>
         <input type="text" required name="project" class="form-control">
         <label>Assign to</label>
