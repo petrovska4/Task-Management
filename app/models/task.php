@@ -42,4 +42,19 @@ function add_task($title, $description, $status, $priority, $due_date, $project_
     $statement->execute();
     $statement->close();
 }
+
+function edit_task($id, $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to) {
+    global $db;
+    $query = 'UPDATE task
+              SET title = ?, description = ?, status = ?, priority = ?, due_date = ?, project_id = ?, created_by = ?, assigned_to = ?
+              WHERE id = ?';
+    
+    $statement = $db->prepare($query);
+    
+    $statement->bind_param('sssssiisi', $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to, $id);
+    
+    $statement->execute();
+    
+    $statement->close();
+}
 ?>

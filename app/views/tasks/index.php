@@ -23,6 +23,12 @@ $rows = $db->query($sql);
             </div>
           </div>
 
+          <div id="editTask" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <?php include 'edit.php'; ?>
+            </div>
+          </div>
+
           <table class="table">
             <thead>
               <tr>
@@ -53,8 +59,25 @@ $rows = $db->query($sql);
                   <td scope="row"><?php echo $row['created_by'] ?></td>
                   <td scope="row"><?php echo $row['assigned_to'] ?></td>
                   <td scope="row"><?php echo $row['created_at'] ?></td>
-                  <td><a href="" class="btn btn-success">Edit</a></td>
                   <td>
+                    <!-- <td>
+                      <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-success">Edit</a>
+                    </td> -->
+
+                    <!-- <button type="button" data-target="#editTask" data-toggle="modal" class="btn btn-success" data-task-id="<?php echo $row['id']; ?>">
+                      Edit
+                    </button> -->
+                      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editTask" onclick="populateEditModal(
+                        <?php echo $row['id']; ?>, 
+                        '<?php echo htmlspecialchars($row['title']); ?>', 
+                        '<?php echo htmlspecialchars($row['description']); ?>', 
+                        '<?php echo htmlspecialchars($row['due_date']); ?>',
+                        <?php echo $row['project_id']; ?>, 
+                        <?php echo $row['assigned_to']; ?>
+                        )">Edit
+                      </button>
+                  </td>
+                  <td> 
                     <form action="../../controllers/taskController.php" method="POST">
                       <input type="hidden" name="action" value="delete">
                       <input type="hidden" name="id" value="<?php echo $row['id'];?>">
@@ -70,4 +93,22 @@ $rows = $db->query($sql);
     </div>
   </div>
 </div>
+<script>
+  function populateEditModal(taskId, title, description, dueDate, projectId, assignedTo) {
+    document.getElementById('editTaskId').value = taskId;
+    document.getElementById('editTaskName').value = title;
+    document.getElementById('editDescription').value = description;
+    // document.getElementById('editDueDate').value = dueDate;
+
+    const dueDateTime = new Date(dueDate).toISOString().slice(0, 16);
+    document.getElementById('editDueDate').value = dueDateTime;
+
+    let projectSelect = document.getElementById('editProject');
+    projectSelect.value = projectId; // Set selected project based on task's project_id
+
+  // Set the assigned_to dropdown
+    let assignedToSelect = document.getElementById('editAssignedTo');
+    assignedToSelect.value = assignedTo; // Set selected user based on task's assigned_to
+  }
+</script>
 <?php include '../footer.php'; ?>
