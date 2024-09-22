@@ -3,58 +3,39 @@
 function get_task($task_id) {
     global $db;
     $query = 'SELECT * FROM task
-                WHERE id = ?';
+    WHERE id = :id';
     $statement = $db->prepare($query);
-
-    $statement->bind_param("i", $task_id);
-
+    $statement->bindValue(":id", $task_id);
     $statement->execute();
     $task = $statement->fetch();
-    $statement->close();
-    
+    $statement->closeCursor();
     return $task;
 }
 
 function delete_task($task_id) {
     global $db;
     $query = 'DELETE FROM task
-                WHERE id = ?';
-
+    WHERE id = :id';
     $statement = $db->prepare($query);
-
-    $statement->bind_param('i', $task_id);
-
+    $statement->bindValue(":id", $task_id);
     $statement->execute();
-    $statement->close();
+    $statement->closeCursor();
 }
 
-function add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to) {
+function add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $qassigned_to) {
     global $db;
     $query = 'INSERT INTO task
-                (title, description, status, priority, due_date, project_id, created_by, assigned_to)
-                VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?)';
-    
+    (title, description, status, priority, due_date, project_id, created_by, assigned_to)';
     $statement = $db->prepare($query);
-
-    $statement->bind_param('sssssiis', $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
-
+    $statement->bindValue(':title', $title);
+    $statement->bindValue(':description', $description);
+    $statement->bindValue(':status', $status);
+    $statement->bindValue(':priority', $priority);
+    $statement->bindValue(':due_date', $due_date);
+    $statement->bindValue(':project_id', $project_id);
+    $statement->bindValue(':created_by', $created_by);
+    $statement->bindValue(':assigned_to', $assigned_to);
     $statement->execute();
-    $statement->close();
-}
-
-function edit_task($id, $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to) {
-    global $db;
-    $query = 'UPDATE task
-              SET title = ?, description = ?, status = ?, priority = ?, due_date = ?, project_id = ?, created_by = ?, assigned_to = ?
-              WHERE id = ?';
-    
-    $statement = $db->prepare($query);
-    
-    $statement->bind_param('sssssiisi', $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to, $id);
-    
-    $statement->execute();
-    
-    $statement->close();
+    $statement->closeCursor();
 }
 ?>
