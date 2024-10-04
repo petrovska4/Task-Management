@@ -1,8 +1,17 @@
 <?php include '../../models/db.php';
+include '../../models/project.php';
 
 $sql = "select * from task";
 
 $rows = $db->query($sql);
+
+?>
+<?php
+// include '../../models/db.php';
+
+$sql2 = "select name, id from project";
+
+$projects = $db->query($sql2);
 
 ?>
 
@@ -35,11 +44,11 @@ $rows = $db->query($sql);
               <th scope="col">Title</th>
               <th scope="col">Description</th>
               <th scope="col">Status</th>
-              <th scope="col">Priority</th>
               <th scope="col">Due date</th>
               <th scope="col">Project</th>
               <th scope="col">Created by</th>
               <th scope="col">Assigned to</th>
+              <th scope="col">Priority</th>
               <th scope="col">Created at</th>
               <th></th>
               <th></th>
@@ -52,17 +61,33 @@ $rows = $db->query($sql);
                 <td class="col-md-10"><?php echo $row['title'] ?></td>
                 <td class="col-md-10"><?php echo $row['description'] ?></td>
                 <td scope="row"><?php echo $row['status'] ?></td>
-                <td scope="row"><?php echo $row['priority'] ?></td>
                 <td scope="row"><?php echo $row['due_date'] ?></td>
-                <td scope="row"><?php echo $row['project_id'] ?></td>
+                <td scope="row"><?php $project = get_project($row['project_id']);
+                  echo htmlspecialchars($project['name']) ?></td>
                 <td scope="row"><?php echo $row['created_by'] ?></td>
                 <td scope="row"><?php echo $row['assigned_to'] ?></td>
+                <td scope="row" style="background-color: 
+                  <?php 
+                    if ($row['priority'] == 'Low') {
+                      echo '#fff176';
+                    } elseif ($row['priority'] == 'Medium') {
+                      echo '#ffb74d';
+                    } elseif ($row['priority'] == 'High') {
+                      echo '#ff8a65';
+                    } else {
+                      echo 'transparent'; // Default color if none matches
+                    } 
+                  ?>;">
+                  <?php echo htmlspecialchars($row['priority']); ?>
+                </td>
                 <td scope="row"><?php echo $row['created_at'] ?></td>
                 <td>
                   <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editTask" onclick="populateEditModal(
                     <?php echo $row['id']; ?>, 
                     '<?php echo htmlspecialchars($row['title']); ?>', 
                     '<?php echo htmlspecialchars($row['description']); ?>', 
+                    '<?php echo htmlspecialchars($row['status']); ?>',
+                    '<?php echo htmlspecialchars($row['priority']); ?>',
                     '<?php echo htmlspecialchars($row['due_date']); ?>',
                     <?php echo $row['project_id']; ?>, 
                     <?php echo $row['assigned_to']; ?>
@@ -85,10 +110,12 @@ $rows = $db->query($sql);
   </div>
 </div>
 <script>
-  function populateEditModal(taskId, title, description, dueDate, projectId, assignedTo) {
+  function populateEditModal(taskId, title, description, status, priority, dueDate, projectId, assignedTo) {
     document.getElementById('editTaskId').value = taskId;
     document.getElementById('editTaskName').value = title;
     document.getElementById('editDescription').value = description;
+    document.getElementById('editTaskStatus').value = status;
+    document.getElementById('editTaskPriority').value = priority;
 
     const dueDateTime = new Date(dueDate).toISOString().slice(0, 16);
     document.getElementById('editDueDate').value = dueDateTime;

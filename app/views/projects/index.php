@@ -45,15 +45,21 @@ $rows = $db->query($sql);
                   <td class="col-md-10"><?php echo $row['name'] ?></td>
                   <td class="col-md-10"><?php echo $row['description'] ?></td>
                   <td>
-                    <?php 
-                      $tasks = get_tasks_by_project($row['id']);
-                      if (!empty($tasks)) { ?>
-                        <?php foreach($tasks as $task): ?>
-                          <p><?php echo $task['title'] ?></p>
-                        <?php endforeach; ?>
-                    <?php } else { ?>
-                      <p>No tasks found for this project.</p>
-                    <?php } ?>
+                  <?php 
+                    $tasks = get_tasks_by_project($row['id']);
+                    if (!empty($tasks)) {
+                        $taskTitles = '';
+                        foreach ($tasks as $index => $task) {
+                            if ($index > 0) {
+                                $taskTitles .= ', ';
+                            }
+                            $taskTitles .= htmlspecialchars($task['title']);
+                        }
+                        echo "<p>$taskTitles</p>";
+                    } else {
+                        echo "<p>No tasks found for this project.</p>";
+                    }
+                    ?>
                   </td>
                   <td scope="row"><?php echo $row['created_by'] ?></td>
                   <td scope="row"><?php echo $row['created_at'] ?></td>

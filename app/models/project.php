@@ -7,10 +7,10 @@ function get_project($project_id) {
   $statement = $db ->prepare($query);
 
   $statement->bind_param("i", $project_id);
-
   $statement->execute();
-  $project = $statement->fetch();
-  $statement->closeCursor();
+  $result = $statement->get_result();
+  $project = $result->fetch_assoc();
+  $statement->close();
 
   return $project;
 }
@@ -71,5 +71,17 @@ function edit_project($id, $name, $description, $created_by) {
   $statement->execute();
   
   $statement->close();
+}
+
+function project_exists($project_id) {
+  global $db;
+  $query = 'SELECT COUNT(*) FROM project WHERE id = ?';
+
+  $statement = $db->prepare($query);
+  $statement->bind_param('i', $project_id);
+  $statement->execute();
+  $result = $statement->get_result();
+
+  return $result->fetch_row()[0] > 0;
 }
 ?>

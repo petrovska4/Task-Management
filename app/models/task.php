@@ -9,7 +9,8 @@ function get_task($task_id) {
     $statement->bind_param("i", $task_id);
 
     $statement->execute();
-    $task = $statement->fetch();
+    $result = $statement->get_result();
+    $task = $result->fetch_assoc();
     $statement->close();
     
     return $task;
@@ -28,16 +29,16 @@ function delete_task($task_id) {
     $statement->close();
 }
 
-function add_task($title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to) {
+function add_task($title, $description, $priority, $due_date, $project_id, $created_by, $assigned_to) {
     global $db;
     $query = 'INSERT INTO task
-                (title, description, status, priority, due_date, project_id, created_by, assigned_to)
+                (title, description, priority, due_date, project_id, created_by, assigned_to)
                 VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?)';
+                (?, ?, ?, ?, ?, ?, ?)';
     
     $statement = $db->prepare($query);
 
-    $statement->bind_param('sssssiis', $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
+    $statement->bind_param('ssssiis', $title, $description, $priority, $due_date, $project_id, $created_by, $assigned_to);
 
     $statement->execute();
     $statement->close();
