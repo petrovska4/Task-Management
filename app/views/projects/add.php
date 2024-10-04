@@ -8,7 +8,7 @@
       <input type="hidden" name="action" value="add">
       <div class="form-group">
         <label>Project Name</label>
-        <input type="text" required name="project" class="form-control">
+        <input type="text" required name="name" class="form-control">
         <label>Description</label>
         <input type="text" required name="description" class="form-control">
       </div>

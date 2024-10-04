@@ -58,4 +58,18 @@ function add_project($name, $description, $created_by) {
   $statement->close();
 }
 
+function edit_project($id, $name, $description, $created_by) {
+  global $db;
+  $query = 'UPDATE project
+            SET name = ?, description = ?, created_by = ?
+            WHERE id = ?';
+  
+  $statement = $db->prepare($query);
+  
+  $statement->bind_param('ssii', $name, $description, $created_by, $id);
+  
+  $statement->execute();
+  
+  $statement->close();
+}
 ?>

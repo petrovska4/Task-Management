@@ -4,12 +4,8 @@ require('../models/project.php');
 
 $action = filter_input(INPUT_POST, 'action');
 
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//     var_dump($_POST);  // This will show the submitted form data
-// }
-
-if($action == 'add') {
-    $name = $_POST['project'];
+if ($action == 'add') {
+    $name = $_POST['name'];
     $description = $_POST['description'];
     $created_by = 1;  
 
@@ -17,11 +13,21 @@ if($action == 'add') {
 
     header("Location: ../views/projects/index.php");
 
-} elseif($action == 'delete') {
+} elseif ($action == 'delete') {
     $id = $_POST['id'];
 
     delete_project($id);
 
     header("Location: ../views/projects/index.php");
-} else echo "fail";
+} elseif ($action == "edit") {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+    $created_by = 1;
+    
+    edit_project($id, $name, $description, $created_by);
+    header("Location: ../views/projects/index.php");
+} else {
+    echo "Invalid action";
+}
 ?>
