@@ -25,15 +25,19 @@ $rows = $db->query($sql);
 <div class="container">
   <div class="column">
     <div class="row" style="margin-top: 70px;">
-      <div class="col-md-10 col-md-offset-1">
+      <div>
         <table class="table">
-          <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-success">Add Project</button>
           <hr>
-          <p>filteri</p>
           <form action="" method="GET"> <!-- Adjust the action URL accordingly -->
-          <input type="text" name="projectName" placeholder="Project Name">
-          <input type="text" name="createdBy" placeholder="Created By"> <!-- Optional filter -->
-          <button type="submit">Filter</button>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" id="name" class="form-control" name="projectName" placeholder="Project Name">
+            </div>
+            <div class="form-group">
+              <label for="created_by">Created By:</label>
+              <input type="text" id="created_by" name="createdBy" class="form-control" placeholder="Created By"> <!-- Optional filter -->
+            </div>
+            <button type="submit" class="btn btn-outline-info">Filter</button>
           </form>
 
           <div id="addProject" class="modal fade" role="dialog">
@@ -52,16 +56,18 @@ $rows = $db->query($sql);
                 <th scope="col">Created by</th>
                 <th scope="col">Created at</th>
                 <th></th>
-                <th></th>
+                <th>          
+                  <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-outline-success">Add Project</button>
+                </th>
               </tr>
             </thead>
             <tbody>
               <?php while($row = $rows->fetch_assoc()): ?>
                 <tr>
-                  <td scope="row"><?php echo $row['id'] ?></td>
-                  <td class="col-md-10"><?php echo $row['name'] ?></td>
-                  <td class="col-md-10"><?php echo $row['description'] ?></td>
-                  <td>
+                  <td class="col-1"><?php echo $row['id'] ?></td>
+                  <td class="col-2"><?php echo $row['name'] ?></td>
+                  <td class="col-4"><?php echo $row['description'] ?></td>
+                  <td class="col-4">
                   <?php 
                     $tasks = get_tasks_by_project($row['id']);
                     if (!empty($tasks)) {
@@ -76,17 +82,18 @@ $rows = $db->query($sql);
                     } else {
                         echo "<p>No tasks found for this project.</p>";
                     }
-                    ?>
+                  ?>
                   </td>
-                  <td scope="row"><?php echo $row['created_by'] ?></td>
-                  <td scope="row"><?php echo $row['created_at'] ?></td>
+                  <td  class="col-2"><?php echo $row['created_by'] ?></td>
+                  <td class="col-2"><?php echo $row['created_at'] ?></td>
                   <td>
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editProject" onclick="populateEditModal(
                       <?php echo $row['id']; ?>,
                       '<?php echo htmlspecialchars($row['name']); ?>',
                       '<?php echo htmlspecialchars($row['description']); ?>',
                       '<?php echo htmlspecialchars($row['created_by']); ?>'
-                      )">Edit
+                      )">
+                      Edit
                     </button>
                   </td>
                   <td>

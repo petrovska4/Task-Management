@@ -30,24 +30,42 @@ $projects = $db->query($sql2);
 
 <?php include '../header.php'; ?>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <div class="container">
     <div class="column">
         <div class="row" style="margin-top: 70px;">
-            <div class="col-md-10 col-md-offset-1">
+            <div>
                 <button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>
                 <hr>
-                <p>Filter Tasks</p>
                 <form action="" method="GET"> <!-- Submit to the same page -->
-                    <input type="text" name="taskName" placeholder="Task Name" value="<?php echo htmlspecialchars($taskName); ?>">
-                    <input type="datetime-local" name="dueDate" value="<?php echo htmlspecialchars($dueDate); ?>">
-                    <select name="priority"> <!-- Changed from status to priority -->
-                        <option value="">Select Priority</option>
-                        <option value="Low" <?php echo ($priority == 'Low') ? 'selected' : ''; ?>>Low</option>
-                        <option value="Medium" <?php echo ($priority == 'Medium') ? 'selected' : ''; ?>>Medium</option>
-                        <option value="High" <?php echo ($priority == 'High') ? 'selected' : ''; ?>>High</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" class="form-control" name="taskName" placeholder="Task Name" value="<?php echo htmlspecialchars($taskName); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="date_time">Date and Time:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-calendar-alt"></i> <!-- Font Awesome icon -->
+                                </span>
+                            </div>
+                            <input type="datetime-local" id="date_time" name="dueDate" class="form-control" value="<?php echo htmlspecialchars($dueDate); ?>">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Priority:</label>
+                        <select id="priority" class="form-control" name="priority"> <!-- Changed from status to priority -->
+                            <option value="">Select Priority</option>
+                            <option value="Low" <?php echo ($priority == 'Low') ? 'selected' : ''; ?>>Low</option>
+                            <option value="Medium" <?php echo ($priority == 'Medium') ? 'selected' : ''; ?>>Medium</option>
+                            <option value="High" <?php echo ($priority == 'High') ? 'selected' : ''; ?>>High</option>
+                        </select>
+                    </div>
                     <input type="hidden" name="action" value="filter">
-                    <button type="submit">Filter</button>
+                    <button type="submit" class="btn btn-outline-info">Filter</button>
                 </form>
 
                 <div id="addTask" class="modal fade" role="dialog">
@@ -84,8 +102,8 @@ $projects = $db->query($sql2);
                             <?php while($row = $rows->fetch_assoc()): ?>
                                 <tr>
                                     <td scope="row"><?php echo $row['id'] ?></td>
-                                    <td class="col-md-10"><?php echo $row['title'] ?></td>
-                                    <td class="col-md-10"><?php echo $row['description'] ?></td>
+                                    <td class="col-2"><?php echo $row['title'] ?></td>
+                                    <td class="col-4"><?php echo $row['description'] ?></td>
                                     <td scope="row"><?php echo $row['status'] ?></td>
                                     <td scope="row"><?php echo $row['due_date'] ?></td>
                                     <td scope="row"><?php $project = get_project($row['project_id']); echo htmlspecialchars($project['name']) ?></td>

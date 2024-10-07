@@ -8,18 +8,14 @@ if ($action == 'add') {
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
     $created_by = 1;
-    $created_at = $_POST['created_at'] ?? null;
 
     // Check if required fields are not empty
-    if (empty($name) || empty($description) || empty($created_at)) {
+    if (empty($name) || empty($description)) {
         echo "All fields are required.";
         exit; // Exit here to avoid further processing
     }
 
-    // Debugging output
-    echo "Adding project: Name: $name, Description: $description, Created At: $created_at";
-
-    add_project($name, $description, $created_by, $created_at);
+    add_project($name, $description, $created_by);
     
     // Redirect after successful addition
     header("Location: ../views/projects/index.php");

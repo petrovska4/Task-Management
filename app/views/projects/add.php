@@ -11,9 +11,6 @@
         <input type="text" required name="name" class="form-control">
         <label>Description</label>
         <input type="text" required name="description" class="form-control">
-        <label>Created At</label>
-        <input type="datetime-local" name="created_at" required class="form-control">
-
       </div>
       <input type="submit" name="add" value="Add project" class="btn btn-success">
     </form>
