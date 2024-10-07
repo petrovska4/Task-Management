@@ -1,49 +1,85 @@
 <?php
 
 function get_project($project_id) {
-    global $db;
-    $query = 'SELECT * FROM projects WHERE id = :id';
-    $statement = $db->prepare($query);
-    $statement->bindValue(":id", $project_id, PDO::PARAM_INT); // Use PDO::PARAM_INT for integers
-    $statement->execute();
-    $project = $statement->fetch(PDO::FETCH_ASSOC); // Fetch as an associative array
-    $statement->closeCursor();
-    return $project;
+  global $db;
+  $query = 'SELECT * FROM project WHERE id = ?';
+  $statement = $db ->prepare($query);
+
+  $statement->bind_param("i", $project_id);
+  $statement->execute();
+  $result = $statement->get_result();
+  $project = $result->fetch_assoc();
+  $statement->close();
+
+  return $project;
+}
+
+function get_tasks_by_project($project_id) {
+  global $db;
+  $query = 'SELECT * FROM task 
+            WHERE project_id = ?';
+  $statement = $db->prepare($query);
+
+  $statement->bind_param('i', $project_id);
+
+  $statement->execute();
+  $result = $statement->get_result();
+  $tasks = $result->fetch_all(MYSQLI_ASSOC);
+
+  $statement->close();
+
+  return $tasks;
 }
 
 function delete_project($project_id) {
     global $db;
-    $query = 'DELETE FROM projects WHERE id = :id';
+    $query = 'DELETE FROM project WHERE id = ?';
     $statement = $db->prepare($query);
-    $statement->bindValue(":id", $project_id, PDO::PARAM_INT); // Use PDO::PARAM_INT for integers
-    $statement->execute();
-    $statement->closeCursor();
+    $statement->bind_param('i', $project_id); 
+    if (!$statement->execute()) {
+      echo "Error: " . $statement->error; // Print error if execution fails
+    }
+    $statement->close();
 }
 
 function add_project($name, $description, $created_by, $created_at) {
     global $db;
-    $query = 'INSERT INTO projects (name, description, created_by, created_at)
-              VALUES (:name, :description, :created_by, :created_at)';
+    $query = 'INSERT INTO project (name, description, created_by, created_at)
+              VALUES (?, ?, ?, ?)';
     $statement = $db->prepare($query);
-    $statement->bindValue(':name', $name);
-    $statement->bindValue(':description', $description);
-    $statement->bindValue(':created_by', $created_by, PDO::PARAM_INT); // Use PDO::PARAM_INT for integers
-    $statement->bindValue(':created_at', $created_at); // Assuming this is a string formatted date
-    $statement->execute();
-    $statement->closeCursor();
+    $statement->bind_param('ssis', $name, $description, $created_by, $created_at);
+    //$statement->execute();
+    if (!$statement->execute()) {
+      echo "Error: " . $statement->error;
+  }
+
+    $statement->close();
 }
 
 function edit_project($id, $name, $description, $created_by) {
-    global $db;
-    $query = 'UPDATE projects
-              SET name = :name, description = :description, created_by = :created_by
-              WHERE id = :id';
-    $statement = $db->prepare($query);
-    $statement->bindValue(':name', $name);
-    $statement->bindValue(':description', $description);
-    $statement->bindValue(':created_by', $created_by, PDO::PARAM_INT); // Use PDO::PARAM_INT for integers
-    $statement->bindValue(':id', $id, PDO::PARAM_INT); // Use PDO::PARAM_INT for integers
-    $statement->execute();
-    $statement->closeCursor();
+  global $db;
+  $query = 'UPDATE project
+            SET name = ?, description = ?, created_by = ?
+            WHERE id = ?';
+  
+  $statement = $db->prepare($query);
+  
+  $statement->bind_param('ssii', $name, $description, $created_by, $id);
+  
+  $statement->execute();
+  
+  $statement->close();
+}
+
+function project_exists($project_id) {
+  global $db;
+  $query = 'SELECT COUNT(*) FROM project WHERE id = ?';
+
+  $statement = $db->prepare($query);
+  $statement->bind_param('i', $project_id);
+  $statement->execute();
+  $result = $statement->get_result();
+
+  return $result->fetch_row()[0] > 0;
 }
 ?>

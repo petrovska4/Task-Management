@@ -2,11 +2,8 @@
 
 include '../../models/db.php';
 
-$sql = "select * from project";
-
-$projects = $db->query($sql);
-
 ?>
+
 <div class="modal-content">
   <div class="modal-header">
     <h4 class="modal-title">Edit task</h4>
@@ -21,6 +18,18 @@ $projects = $db->query($sql);
         <input type="text" id="editTaskName" required name="task" class="form-control">
         <label>Description</label>
         <input type="text" id="editDescription" required name="description" class="form-control">
+        <label>Status</label>
+        <select id="editTaskStatus" required name="status" class="form-control">
+          <option value="To Do">To Do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+        <label>Priority</label>
+        <select id="editTaskPriority" required name="priority" class="form-control">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
         <label>Due date</label>
         <input type="datetime-local" id="editDueDate" required name="due_date" class="form-control">
         <label>Project</label>
@@ -28,7 +37,7 @@ $projects = $db->query($sql);
         <label>Assign to</label>
         <input type="text" id="editAssignedTo" required name="assigned_to" class="form-control">
       </div>
-      <input type="submit" name="add" value="Save" class="btn btn-success">
+      <input type="submit" name="save" value="Save" class="btn btn-success">
     </form>
   </div>
   <div class="modal-footer">

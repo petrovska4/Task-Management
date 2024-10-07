@@ -2,8 +2,20 @@
 include '../../models/db.php';
 include '../../models/project.php';
 
-$sql = "select * from project";
+//$sql = "select * from project";
+// Check for filter parameters
+$projectName = filter_input(INPUT_GET, 'projectName', FILTER_SANITIZE_STRING);
+$createdBy = filter_input(INPUT_GET, 'createdBy', FILTER_SANITIZE_STRING); // If you want to filter by user
 
+$sql = "SELECT * FROM project WHERE 1=1"; // Start with a base SQL query
+
+if ($projectName) {
+    $sql .= " AND name LIKE '%" . $db->real_escape_string($projectName) . "%'";
+}
+
+if ($createdBy) {
+    $sql .= " AND created_by = '" . $db->real_escape_string($createdBy) . "'"; // Adjust as needed
+}
 $rows = $db->query($sql);
 
 ?>
@@ -18,6 +30,11 @@ $rows = $db->query($sql);
           <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-success">Add Project</button>
           <hr>
           <p>filteri</p>
+          <form action="" method="GET"> <!-- Adjust the action URL accordingly -->
+          <input type="text" name="projectName" placeholder="Project Name">
+          <input type="text" name="createdBy" placeholder="Created By"> <!-- Optional filter -->
+          <button type="submit">Filter</button>
+          </form>
 
           <div id="addProject" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -45,23 +62,37 @@ $rows = $db->query($sql);
                   <td class="col-md-10"><?php echo $row['name'] ?></td>
                   <td class="col-md-10"><?php echo $row['description'] ?></td>
                   <td>
-                    <?php 
-                      $tasks = get_tasks_by_project($row['id']);
-                      if (!empty($tasks)) { ?>
-                        <?php foreach($tasks as $task): ?>
-                          <p><?php echo $task['title'] ?></p>
-                        <?php endforeach; ?>
-                    <?php } else { ?>
-                      <p>No tasks found for this project.</p>
-                    <?php } ?>
+                  <?php 
+                    $tasks = get_tasks_by_project($row['id']);
+                    if (!empty($tasks)) {
+                        $taskTitles = '';
+                        foreach ($tasks as $index => $task) {
+                            if ($index > 0) {
+                                $taskTitles .= ', ';
+                            }
+                            $taskTitles .= htmlspecialchars($task['title']);
+                        }
+                        echo "<p>$taskTitles</p>";
+                    } else {
+                        echo "<p>No tasks found for this project.</p>";
+                    }
+                    ?>
                   </td>
                   <td scope="row"><?php echo $row['created_by'] ?></td>
                   <td scope="row"><?php echo $row['created_at'] ?></td>
-                  <td><a href="" class="btn btn-success">Edit</a></td>
+                  <td>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editProject" onclick="populateEditModal(
+                      <?php echo $row['id']; ?>,
+                      '<?php echo htmlspecialchars($row['name']); ?>',
+                      '<?php echo htmlspecialchars($row['description']); ?>',
+                      '<?php echo htmlspecialchars($row['created_by']); ?>'
+                      )">Edit
+                    </button>
+                  </td>
                   <td>
                     <form action="../../controllers/projectController.php" method="POST">
                       <input type="hidden" name="action" value="delete">
-                      <input type="hidden" name="id" value="<?php echo $row['id'];?>">
+                      <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                       <input type="submit" class="btn btn-danger" value="Delete">
                     </form>
                   </td>
@@ -73,5 +104,35 @@ $rows = $db->query($sql);
       </div>
     </div>
   </div>
+  
+  <div id="editProject" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <?php include 'edit.php'; ?>
+    </div>
+  </div>
+
 </div>
+<script>
+  function populateEditModal(projectId, name, description, created_by) {
+    document.getElementById('editProjectId').value = projectId;
+    document.getElementById('editProjectName').value = name;
+    document.getElementById('editProjectDescription').value = description;
+    document.getElementById('editProjectCreatedBy').value = created_by;
+
+    // let tasks = JSON.parse(tasksJson);
+
+    // let tasksContainer = document.getElementById('editProjectTasks');
+    // tasksContainer.innerHTML = '';
+
+    // if (tasks.length > 0) {
+    //   tasks.forEach(task => {
+    //     let taskElement = document.createElement('p');
+    //     taskElement.textContent = task.title;
+    //     tasksContainer.appendChild(taskElement);
+    //   });
+    // } else {
+    //   tasksContainer.textContent = 'No tasks found for this project.';
+    // }
+  }
+</script>
 <?php include '../footer.php'; ?>
