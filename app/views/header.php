@@ -24,6 +24,10 @@
         <li class="nav-item">
           <a class="nav-link" href="/task-management/app/views/projects/index.php">Projects</a>
         </li>
+        <li>
+        <a href="/task-management/public/profile.php">Profile</a>
+
+        </li>
       </ul>
       <!-- <ul class="navbar-nav">
         <li class="nav-item">
