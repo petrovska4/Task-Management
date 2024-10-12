@@ -1,14 +1,23 @@
 <?php
-require('../models/db.php');  
-require('../models/task.php');  
-require('../models/project.php');
-require('../libraries/taskLibrary.php');
+require_once(__DIR__ . '/../models/db.php');
+require(__DIR__ . '/../models/task.php');  
+require(__DIR__ . '/../models/project.php');
+require(__DIR__ . '/../libraries/taskLibrary.php');
 
 $action = filter_input(INPUT_POST, 'action');
 
 // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //     var_dump($_POST);  // This will show the submitted form data
 // }
+
+class taskController {
+
+    public function index() {
+        header("Location: app/views/tasks/index.php");
+    }
+}
+
+$controller = new taskController();
 
 if($action == 'add') {
     $title = $_POST['task'];

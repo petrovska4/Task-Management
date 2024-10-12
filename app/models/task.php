@@ -14,6 +14,18 @@ function get_task($task_id) {
     return $task;
 }
 
+function get_all_tasks() {
+    global $db;
+    $query = 'SELECT * FROM task';
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $result = $statement->get_result();
+    $tasks = $result->fetch_assoc();
+    $statement->close();
+    
+    return $tasks;
+}
+
 function delete_task($task_id) {
     global $db;
     $query = 'DELETE FROM task

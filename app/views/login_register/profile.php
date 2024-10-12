@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../app/models/db.php'; // Include database connection
+require '../../models/db.php'; // Include database connection
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {

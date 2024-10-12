@@ -25,18 +25,26 @@
           <a class="nav-link" href="/task-management/app/views/projects/index.php">Projects</a>
         </li>
         <li>
-        <a href="/task-management/public/profile.php">Profile</a>
-
         </li>
       </ul>
-      <!-- <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="login.php">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="register.php">Register</a>
-        </li>
-      </ul> -->
+      <ul class="navbar-nav">
+        <?php
+          if (isset($_SESSION['username'])){
+            echo'
+            <li class="nav-link">
+            <a href="../login_register/profile.php" class="nav-link">Profile</a>
+            </li>';
+          } else {
+            echo '
+            <li>
+            <a href="../login_register/login_index.php" class="nav-link">Login</a>
+            </li>
+            <li>
+            <a href="../login_register/register_index.php" class="nav-link">Register</a>
+            </li>';
+          }
+        ?>
+      </ul>
     </div>
   </nav>
   </header>

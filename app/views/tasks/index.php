@@ -4,10 +4,10 @@ include '../../models/project.php';
 session_start(); // Start the session
 
 // Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login.php"); // Redirect to login if not logged in
-    exit;
-}
+// if (!isset($_SESSION['user_id'])) {
+//     header("Location: ../login.php"); // Redirect to login if not logged in
+//     exit;
+// }
 
 // Get filter parameters from the GET request
 $taskName = filter_input(INPUT_GET, 'taskName', FILTER_SANITIZE_STRING);
@@ -44,7 +44,7 @@ $projects = $db->query($sql2);
         <div class="row" style="margin-top: 70px;">
             <div>
             <?php
-            if ($_SESSION['role'] === 'admin'){
+            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
                 echo'<button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>';
             }
             ?>
