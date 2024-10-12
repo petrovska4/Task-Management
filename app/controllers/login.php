@@ -23,12 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $user_name;
         $_SESSION['role'] = $role;
 
-        if ($remember) {
-            setcookie('username', $username, time() + (86400 * 30), "/");
-        } else {
-            // If not remembered, clear any existing cookie
-            setcookie('username', '', time() - 3600, "/"); // Expire the cookie
-        }
+        setcookie('username', $username, time() + (86400 * 30), "/");
+        setcookie('user_id', $user_id, time() + (86400 * 30), "/");
 
         header("Location: ../views/tasks/index.php");
         exit();

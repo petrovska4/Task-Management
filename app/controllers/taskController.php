@@ -53,7 +53,7 @@ if($action == 'add') {
         exit;
     } 
 
-    $created_by = 1;  
+    $created_by = $_COOKIE['user_id'];  
 
     add_task($title, $description, $priority, $due_date, $project_id, $created_by, $assigned_to);
 
@@ -81,9 +81,7 @@ if($action == 'add') {
         exit;
     }
 
-    $created_by = 1;  
-
-    edit_task($id, $title, $description, $status, $priority, $due_date, $project_id, $created_by, $assigned_to);
+    edit_task($id, $title, $description, $status, $priority, $due_date, $project_id, $assigned_to);
 
     header("Location: ../views/tasks/index.php");
 

@@ -7,7 +7,7 @@ $action = filter_input(INPUT_POST, 'action');
 if ($action == 'add') {
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
-    $created_by = 1;
+    $created_by = $_COOKIE['user_id'];
 
     // Check if required fields are not empty
     if (empty($name) || empty($description)) {
@@ -34,9 +34,8 @@ if ($action == 'add') {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $description = $_POST['description'];
-    $created_by = 1;
     
-    edit_project($id, $name, $description, $created_by);
+    edit_project($id, $name, $description);
     header("Location: ../views/projects/index.php");
 } elseif ($action == 'filter') {
     // Debugging output

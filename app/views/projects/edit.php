@@ -18,8 +18,6 @@ include '../../models/db.php';
         <input type="text" id="editProjectName" required name="name" class="form-control"> 
         <label>Description</label>
         <textarea id="editProjectDescription" required name="description" class="form-control"></textarea>
-        <label>Created by</label>
-        <input type="text" id="editProjectCreatedBy" required name="created_by" class="form-control"> 
       </div>
       <input type="submit" name="save" value="Save" class="btn btn-success">
     </form>

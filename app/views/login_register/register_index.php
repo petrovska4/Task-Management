@@ -1,102 +1,94 @@
-<?php
-include_once "../header.php";
-?>
-	<div class="row">
-		<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-			<form action="../../controllers/register.php" role="form" method="post" name="registration_form">
-				<h2>Please Sign Up <small>It's free and always will be.</small></h2>
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1" required>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="text" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2" required>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="3" required>
-				</div>
-				<div class="form-group">
-					<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4" required>
-				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="5" required>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6">
-						<div class="form-group">
-							<input type="password" name="confirm_password" id="confirm_password" class="form-control input-lg" placeholder="Confirm Password" tabindex="6" required>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4 col-sm-3 col-md-3 checkbox">
-						<!-- <span class="button-checkbox">
-							<button type="button" class="btn" data-color="info" tabindex="7">I Agree</button>
-							<input type="checkbox" name="t_and_c" id="t_and_c" class="hidden" value="1">
-						</span> -->
-						<label>
-							<input type="checkbox" required> Check me out
-						</label>
-					</div>
-					<div class="col-xs-8 col-sm-9 col-md-9">
-						By clicking <strong class="label label-primary">Register</strong>, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m">Terms and Conditions</a> set out by this site, including our Cookie Use.
-					</div>
-				</div>
+<?php include_once "../header.php"; ?>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Sign Up <small class="text-muted">It's free and always will be.</small></h2>
+                    <form action="../../controllers/register.php" method="post" name="registration_form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" name="first_name" id="first_name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" name="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirm_password" class="form-label">Confirm Password</label>
+                                <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" required id="t_and_c">
+                            <label class="form-check-label" for="t_and_c">
+                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#t_and_c_m">Terms and Conditions</a> including our Cookie Use.
+                            </label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="submit" class="btn btn-primary btn-lg">Register</button>
+                            <a href="login.php" class="btn btn-outline-success btn-lg">Sign In</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-				<hr class="colorgraph">
-				<div class="row">
-					<div class="col-xs-12 col-md-6"><input type="submit" name="submit" value="Register" class="btn btn-primary btn-block btn-lg" tabindex="7"></div>
-					<div class="col-xs-12 col-md-6"><a href="login.php" class="btn btn-success btn-block btn-lg">Sign In</a></div>
-				</div>
-			</form>
-		</div>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title" id="myModalLabel">Terms & Conditions</h4>
-				</div>
-				<div class="modal-body">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum at sapiente consequuntur natus odio reiciendis perferendis rem nisi tempore possimus ipsa porro delectus quidem dolorem ad.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+<!-- Terms & Conditions Modal -->
+<div class="modal fade" id="t_and_c_m" tabindex="-1" aria-labelledby="t_and_c_m_label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="t_and_c_m_label">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum...</p>
+                <!-- Add more terms here as needed -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Agree</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-	var password = document.getElementById("password")
-	, confirm_password = document.getElementById("confirm_password");
+    // Ensure DOM is loaded before accessing elements
+    document.addEventListener("DOMContentLoaded", function () {
+        var password = document.getElementById("password");
+        var confirm_password = document.getElementById("confirm_password");
 
-	function validatePassword(){
-		if(password.value != confirm_password.value) {
-			confirm_password.setCustomValidity("Passwords Don't Match");
-		} else {
-			confirm_password.setCustomValidity('');
-		}
-	}
+        function validatePassword() {
+            if (password.value !== confirm_password.value) {
+                confirm_password.setCustomValidity("Passwords don't match");
+            } else {
+                confirm_password.setCustomValidity('');
+            }
+        }
 
-	password.onchange = validatePassword;
-	confirm_password.onkeyup = validatePassword;
+        // Add event listeners for real-time validation
+        password.addEventListener('change', validatePassword);
+        confirm_password.addEventListener('keyup', validatePassword);
+    });
 </script>
-<?php
-include_once "../footer.php";
-?>
+
+
+<?php include_once "../footer.php"; ?>

@@ -1,6 +1,7 @@
 <?php 
 include '../../models/db.php'; 
 include '../../models/project.php'; 
+include '../../models/user.php';
 session_start(); // Start the session
 
 // Get filter parameters from the GET request
@@ -27,6 +28,7 @@ $rows = $db->query($sql); // Execute the filtered query
 <?php
 $sql2 = "SELECT name, id FROM project";
 $projects = $db->query($sql2);
+
 ?>
 
 <?php include '../header.php'; ?>
@@ -38,7 +40,7 @@ $projects = $db->query($sql2);
         <div class="row" style="margin-top: 70px;">
             <div>
             <?php
-            if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'){
+            if (isset($_SESSION['role'])){
                 echo'<button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>';
             }
             ?>
@@ -111,9 +113,18 @@ $projects = $db->query($sql2);
                                     <td class="col-4"><?php echo $row['description'] ?></td>
                                     <td scope="row"><?php echo $row['status'] ?></td>
                                     <td scope="row"><?php echo $row['due_date'] ?></td>
-                                    <td scope="row"><?php $project = get_project($row['project_id']); echo htmlspecialchars($project['name']) ?></td>
-                                    <td scope="row"><?php echo $row['created_by'] ?></td>
-                                    <td scope="row"><?php echo $row['assigned_to'] ?></td>
+                                    <td scope="row">
+                                        <?php $project = get_project($row['project_id']); 
+                                        echo htmlspecialchars($project['name']) ?>
+                                    </td>
+                                    <td scope="row">
+                                        <?php $user = get_user($row['created_by']); 
+                                        echo htmlspecialchars($user['first_name']) . " " . htmlspecialchars($user['last_name'])?>
+                                    </td>
+                                    <td scope="row">
+                                        <?php $user = get_user($row['assigned_to']); 
+                                        echo htmlspecialchars($user['first_name']) . " " . htmlspecialchars($user['last_name'])?>
+                                    </td>
                                     <td scope="row" style="background-color: 
                                         <?php 
                                             if ($row['priority'] == 'Low') {
@@ -130,24 +141,27 @@ $projects = $db->query($sql2);
                                     </td>
                                     <td scope="row"><?php echo $row['created_at'] ?></td>
                                     <td>
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editTask" onclick="populateEditModal(
-                                            <?php echo $row['id']; ?>, 
-                                            '<?php echo htmlspecialchars($row['title']); ?>', 
-                                            '<?php echo htmlspecialchars($row['description']); ?>', 
-                                            '<?php echo htmlspecialchars($row['status']); ?>',
-                                            '<?php echo htmlspecialchars($row['priority']); ?>',
-                                            '<?php echo htmlspecialchars($row['due_date']); ?>',
-                                            <?php echo $row['project_id']; ?>, 
-                                            <?php echo $row['assigned_to'];?>
-                                        )">Edit
-                                        </button>
+                                        <?php if (isset($_SESSION['role'])): ?>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editTask" onclick="populateEditModal(
+                                                <?php echo $row['id']; ?>, 
+                                                '<?php echo htmlspecialchars($row['title']); ?>', 
+                                                '<?php echo htmlspecialchars($row['description']); ?>', 
+                                                '<?php echo htmlspecialchars($row['status']); ?>',
+                                                '<?php echo htmlspecialchars($row['priority']); ?>',
+                                                '<?php echo htmlspecialchars($row['due_date']); ?>',
+                                                <?php echo $row['project_id']; ?>, 
+                                                <?php echo $row['assigned_to']; ?>
+                                            )">Edit</button>
+                                        <?php endif; ?>
                                     </td>
                                     <td> 
-                                        <form action="../../controllers/taskController.php" method="POST">
-                                            <input type="hidden" name="action" value="delete">
-                                            <input type="hidden" name="id" value="<?php echo $row['id'];?>">
-                                            <input type="submit" class="btn btn-danger" value="Delete">
-                                        </form>
+                                        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+                                            <form action="../../controllers/taskController.php" method="POST">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

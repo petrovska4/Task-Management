@@ -1,6 +1,7 @@
 <?php 
 include '../../models/db.php';
 include '../../models/project.php';
+include '../../models/user.php';
 session_start(); 
 //$sql = "select * from project";
 // Check for filter parameters
@@ -55,8 +56,10 @@ $rows = $db->query($sql);
                 <th scope="col">Created by</th>
                 <th scope="col">Created at</th>
                 <th></th>
-                <th>          
-                  <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-outline-success">Add Project</button>
+                <th>
+                    <?php if (isset($_SESSION['username'])): ?>
+                        <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-outline-success">Add Project</button>
+                    <?php endif; ?>
                 </th>
               </tr>
             </thead>
@@ -83,24 +86,31 @@ $rows = $db->query($sql);
                     }
                   ?>
                   </td>
-                  <td  class="col-2"><?php echo $row['created_by'] ?></td>
+                  <td  class="col-2">
+                    <?php $user = get_user($row['created_by']);
+                        echo htmlspecialchars($user['first_name']) . " " . htmlspecialchars($user['last_name'])?>
+                  </td>
                   <td class="col-2"><?php echo $row['created_at'] ?></td>
                   <td>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editProject" onclick="populateEditModal(
-                      <?php echo $row['id']; ?>,
-                      '<?php echo htmlspecialchars($row['name']); ?>',
-                      '<?php echo htmlspecialchars($row['description']); ?>',
-                      '<?php echo htmlspecialchars($row['created_by']); ?>'
-                      )">
-                      Edit
-                    </button>
+                      <?php if (isset($_SESSION['username'])): ?>
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editProject" onclick="populateEditModal(
+                              <?php echo $row['id']; ?>,
+                              '<?php echo htmlspecialchars($row['name']); ?>',
+                              '<?php echo htmlspecialchars($row['description']); ?>',
+                              '<?php echo htmlspecialchars($row['created_by']); ?>'
+                          )">
+                              Edit
+                          </button>
+                      <?php endif; ?>
                   </td>
                   <td>
-                    <form action="../../controllers/projectController.php" method="POST">
-                      <input type="hidden" name="action" value="delete">
-                      <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                      <input type="submit" class="btn btn-danger" value="Delete">
-                    </form>
+                      <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+                          <form action="../../controllers/projectController.php" method="POST">
+                              <input type="hidden" name="action" value="delete">
+                              <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                              <input type="submit" class="btn btn-danger" value="Delete">
+                          </form>
+                      <?php endif; ?>
                   </td>
                 </tr>
               <?php endwhile; ?>

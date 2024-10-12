@@ -56,15 +56,15 @@ function add_project($name, $description, $created_by) {
     $statement->close();
 }
 
-function edit_project($id, $name, $description, $created_by) {
+function edit_project($id, $name, $description) {
   global $db;
   $query = 'UPDATE project
-            SET name = ?, description = ?, created_by = ?
+            SET name = ?, description = ?
             WHERE id = ?';
   
   $statement = $db->prepare($query);
   
-  $statement->bind_param('ssii', $name, $description, $created_by, $id);
+  $statement->bind_param('ssi', $name, $description, $id);
   
   $statement->execute();
   
