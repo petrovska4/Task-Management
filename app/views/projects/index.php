@@ -1,7 +1,7 @@
 <?php 
 include '../../models/db.php';
 include '../../models/project.php';
-
+session_start(); 
 //$sql = "select * from project";
 // Check for filter parameters
 $projectName = filter_input(INPUT_GET, 'projectName', FILTER_SANITIZE_STRING);
@@ -21,7 +21,6 @@ $rows = $db->query($sql);
 ?>
 
 <?php include '../header.php'; ?>
-
 <div class="container">
   <div class="column">
     <div class="row" style="margin-top: 70px;">

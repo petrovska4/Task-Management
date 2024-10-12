@@ -13,6 +13,20 @@ $action = filter_input(INPUT_POST, 'action');
 class taskController {
 
     public function index() {
+        session_start();
+
+    if (!isset($_SESSION['username']) && isset($_COOKIE['username'])) {
+        $_SESSION['username'] = $_COOKIE['username'];
+        echo $_SESSION['username'];
+        $_SESSION['role'] = get_user_role($_COOKIE['username']); // Fetch role
+    }
+
+    // ako ne si logiran te nosi tuka
+    if (!isset($_SESSION['username'])) {
+        echo $_SESSION['username'];
+        header("Location: app/views/login_register/login_index.php");
+        exit();
+    }
         header("Location: app/views/tasks/index.php");
     }
 }

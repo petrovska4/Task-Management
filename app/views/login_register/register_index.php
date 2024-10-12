@@ -3,7 +3,7 @@ include_once "../header.php";
 ?>
 	<div class="row">
 		<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-			<form role="form" method="post" name="registration_form">
+			<form action="../../controllers/register.php" role="form" method="post" name="registration_form">
 				<h2>Please Sign Up <small>It's free and always will be.</small></h2>
 				<hr class="colorgraph">
 				<div class="row">
@@ -19,7 +19,7 @@ include_once "../header.php";
 					</div>
 				</div>
 				<div class="form-group">
-					<input type="text" name="display_name" id="display_name" class="form-control input-lg" placeholder="Display Name" tabindex="3" required>
+					<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="3" required>
 				</div>
 				<div class="form-group">
 					<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" tabindex="4" required>

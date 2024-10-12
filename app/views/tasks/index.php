@@ -3,12 +3,6 @@ include '../../models/db.php';
 include '../../models/project.php'; 
 session_start(); // Start the session
 
-// Check if the user is logged in
-// if (!isset($_SESSION['user_id'])) {
-//     header("Location: ../login.php"); // Redirect to login if not logged in
-//     exit;
-// }
-
 // Get filter parameters from the GET request
 $taskName = filter_input(INPUT_GET, 'taskName', FILTER_SANITIZE_STRING);
 $dueDate = filter_input(INPUT_GET, 'dueDate', FILTER_SANITIZE_STRING);
@@ -144,7 +138,7 @@ $projects = $db->query($sql2);
                                             '<?php echo htmlspecialchars($row['priority']); ?>',
                                             '<?php echo htmlspecialchars($row['due_date']); ?>',
                                             <?php echo $row['project_id']; ?>, 
-                                            <?php echo $row['assigned_to']; ?>
+                                            <?php echo $row['assigned_to'];?>
                                         )">Edit
                                         </button>
                                     </td>

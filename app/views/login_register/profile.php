@@ -28,7 +28,7 @@ $stmt->close();
 </head>
 <body>
     <h1>User Profile</h1>
-    <form action="update_profile.php" method="POST">
+    <form action="../../controllers/update_profile.php" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($username); ?>" required>
 
@@ -37,6 +37,6 @@ $stmt->close();
 
         <button type="submit">Update Profile</button>
     </form>
-    <a href="logout.php">Logout</a>
+    <a href="../../controllers/logout.php">Logout</a>
 </body>
 </html>
