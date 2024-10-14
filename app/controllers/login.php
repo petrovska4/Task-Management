@@ -1,14 +1,17 @@
 <?php
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require '../models/db.php';  
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $remember = isset($_POST['remember']);
+    // $remember = isset($_POST['remember']);
 
     $stmt = $db->prepare("SELECT id, username, password, role FROM user WHERE username = ?");
     if (!$stmt) {
-        echo "SQL preparation error: " . $db->error;
+        $_SESSION['login_error'] = "Database error: " . $db->error;
+        header("Location: ../views/login_register/login_index.php");
         exit();
     }
     $stmt->bind_param("s", $username);
@@ -17,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->fetch(); 
 
     if (password_verify($password, $hashed_password)) {
-        echo "bla";
-        session_start();
+        session_regenerate_id(true); // Avoid session fixation
+
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $user_name;
         $_SESSION['role'] = $role;
@@ -29,7 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: ../views/tasks/index.php");
         exit();
     } else {
-        echo "Verification Result: Invalid (Password doesn't match)<br>";
+        $_SESSION['login_error'] = "Invalid username or password.";
+        header("Location: ../views/login_register/login_index.php");
+        exit();    
     }
 
     $stmt->close();
