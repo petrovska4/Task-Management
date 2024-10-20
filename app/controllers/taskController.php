@@ -143,4 +143,3 @@ if($action == 'add') {
         exit; // Exit after including the view
     }
 } else echo "fail";
-?>
