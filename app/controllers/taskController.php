@@ -56,6 +56,8 @@ if($action == 'add') {
     $created_by = $_COOKIE['user_id'];  
 
     add_task($title, $description, $priority, $due_date, $project_id, $created_by, $assigned_to);
+    
+
 
     header("Location: ../views/tasks/index.php");
 
