@@ -2,7 +2,9 @@
 require_once(__DIR__ . '/../models/db.php');
 require(__DIR__ . '/../models/task.php');  
 require(__DIR__ . '/../models/project.php');
+require(__DIR__ . '/../models/user.php');
 require(__DIR__ . '/../libraries/taskLibrary.php');
+require_once(__DIR__ . '/../../send_email.php');
 
 $action = filter_input(INPUT_POST, 'action');
 
@@ -14,12 +16,6 @@ class taskController {
 
     public function index() {
         session_start();
-
-    if (!isset($_SESSION['username']) && isset($_COOKIE['username'])) {
-        $_SESSION['username'] = $_COOKIE['username'];
-        echo $_SESSION['username'];
-        $_SESSION['role'] = get_user_role($_COOKIE['username']); // Fetch role
-    }
 
     // ako ne si logiran te nosi tuka
     if (!isset($_SESSION['username'])) {
@@ -57,7 +53,15 @@ if($action == 'add') {
 
     add_task($title, $description, $priority, $due_date, $project_id, $created_by, $assigned_to);
     
+    $task = [
+        'title' => $title,
+        'description' => $description,
+        'due_date' => $due_date
+    ];
 
+    $email = get_user_email($assigned_to);
+
+    send_email($task, $email);
 
     header("Location: ../views/tasks/index.php");
 

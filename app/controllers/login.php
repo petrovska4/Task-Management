@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password']);
     // $remember = isset($_POST['remember']);
 
-    $stmt = $db->prepare("SELECT id, username, password, role FROM user WHERE username = ?");
+    $stmt = $db->prepare("SELECT id, username, password, role, email FROM user WHERE username = ?");
     if (!$stmt) {
         $_SESSION['login_error'] = "Database error: " . $db->error;
         header("Location: ../views/login_register/login_index.php");
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $stmt->bind_param("s", $username);
     $stmt->execute();
-    $stmt->bind_result($user_id, $user_name, $hashed_password, $role);
+    $stmt->bind_result($user_id, $user_name, $hashed_password, $role, $email);
     $stmt->fetch(); 
 
     if (password_verify($password, $hashed_password)) {
@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $user_name;
         $_SESSION['role'] = $role;
+        $_SESSION['email'] = $email; 
 
         setcookie('username', $username, time() + (86400 * 30), "/");
         setcookie('user_id', $user_id, time() + (86400 * 30), "/");

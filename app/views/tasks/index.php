@@ -29,6 +29,9 @@ $rows = $db->query($sql); // Execute the filtered query
 $sql2 = "SELECT name, id FROM project";
 $projects = $db->query($sql2);
 
+$sql3 = "SELECT username, id FROM user";
+$users = $db->query($sql3);
+
 ?>
 
 <?php include '../header.php'; ?>

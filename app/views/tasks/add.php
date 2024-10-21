@@ -28,7 +28,13 @@
           <?php } ?>
         </select>
         <label>Assign to</label>
-        <input type="text" required name="assigned_to" class="form-control">
+        <select required name="assigned_to" class="form-control">
+          <option value="" disabled selected>Assign to</option> <!-- Optional placeholder -->
+          <?php
+          while ($user = $users->fetch_assoc()) { ?>
+              <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['username']); ?></option>
+          <?php } ?>
+        </select>
       </div>
       <input type="submit" name="add" value="Add task" class="btn btn-success">
     </form>
