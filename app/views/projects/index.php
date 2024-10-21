@@ -53,6 +53,7 @@ $rows = $db->query($sql);
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
                 <th scope="col">Assigned tasks</th>
+                <th scope="col">Documentation</th>
                 <th scope="col">Created by</th>
                 <th scope="col">Created at</th>
                 <th></th>
@@ -85,6 +86,13 @@ $rows = $db->query($sql);
                         echo "<p>No tasks found for this project.</p>";
                     }
                   ?>
+                  </td>
+                  <td class="col-2">
+                    <?php if (!empty($row['file_path'])): ?>
+                      <a href="../../controllers/download.php?file_path=<?php echo urlencode($row['file_path']); ?>" download>Download here...</a>
+                    <?php else: ?>
+                      <span>No file available</span>
+                    <?php endif; ?>
                   </td>
                   <td  class="col-2">
                     <?php $user = get_user($row['created_by']);

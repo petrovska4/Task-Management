@@ -4,6 +4,25 @@ require('../models/project.php');
 
 $action = filter_input(INPUT_POST, 'action');
 
+if (isset($_GET['file_path'])) {
+    $file_path = urldecode($_GET['file_path']); // Decode the URL-encoded file path
+
+    // Set headers to initiate a file download
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate');
+    header('Pragma: public');
+    header('Content-Length: ' . filesize($file_path));
+
+    // Clear output buffer and read the file
+    ob_clean();
+    flush();
+    readfile($file_path);
+    exit;
+}
+
 if ($action == 'add') {
     $name = $_POST['name'] ?? '';
     $description = $_POST['description'] ?? '';
@@ -15,7 +34,48 @@ if ($action == 'add') {
         exit; // Exit here to avoid further processing
     }
 
-    add_project($name, $description, $created_by);
+    $file_path = null;
+    if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+        $target_dir = '../../uploads/'; // Set your upload directory
+        $target_file = $target_dir . basename($_FILES['file']['name']);
+        $uploadOk = 1;
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+
+        // Check file size (example: limit to 2MB)
+        if ($_FILES['file']['size'] > 2000000) {
+            echo "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats (example: allow jpg, png, pdf)
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        if (!in_array($imageFileType, ['jpg', 'png', 'pdf', 'docx'])) {
+            echo "Sorry, only JPG, PNG, PDF & DOCX files are allowed.";
+            $uploadOk = 0;
+        }
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+        } else {
+            // If everything is ok, try to upload file
+            if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
+                $file_path = $target_file; // Save the file path to store in the database
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
+    } else {
+        echo "No file uploaded or there was an upload error.";
+        exit;
+    }
+
+    add_project($name, $description, $created_by, $file_path);
     
     // Redirect after successful addition
     header("Location: ../views/projects/index.php");

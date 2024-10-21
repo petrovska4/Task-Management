@@ -42,12 +42,12 @@ function delete_project($project_id) {
     $statement->close();
 }
 
-function add_project($name, $description, $created_by) {
+function add_project($name, $description, $created_by, $file_path) {
     global $db;
-    $query = 'INSERT INTO project (name, description, created_by)
-              VALUES (?, ?, ?)';
+    $query = 'INSERT INTO project (name, description, created_by, file_path)
+              VALUES (?, ?, ?, ?)';
     $statement = $db->prepare($query);
-    $statement->bind_param('ssi', $name, $description, $created_by);
+    $statement->bind_param('ssis', $name, $description, $created_by, $file_path);
     //$statement->execute();
     if (!$statement->execute()) {
       echo "Error: " . $statement->error;
