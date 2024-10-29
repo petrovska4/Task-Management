@@ -2,50 +2,55 @@
 include '../../models/db.php';
 include '../../models/project.php';
 include '../../models/user.php';
-session_start(); 
-//$sql = "select * from project";
-// Check for filter parameters
-$projectName = filter_input(INPUT_GET, 'projectName', FILTER_SANITIZE_STRING);
-$createdBy = filter_input(INPUT_GET, 'createdBy', FILTER_SANITIZE_STRING); // If you want to filter by user
 
-$sql = "SELECT * FROM project WHERE 1=1"; // Start with a base SQL query
+session_start(); 
+
+$projectName = filter_input(INPUT_GET, 'projectName', FILTER_SANITIZE_STRING);
+$createdBy = filter_input(INPUT_GET, 'createdBy', FILTER_SANITIZE_STRING); 
+
+$sql = "SELECT * FROM project WHERE 1=1";
 
 if ($projectName) {
     $sql .= " AND name LIKE '%" . $db->real_escape_string($projectName) . "%'";
 }
 
 if ($createdBy) {
-    $sql .= " AND created_by = '" . $db->real_escape_string($createdBy) . "'"; // Adjust as needed
+    $sql .= " AND created_by = '" . $db->real_escape_string($createdBy) . "'";
 }
 $rows = $db->query($sql);
 
 ?>
 
 <?php include '../header.php'; ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 <div class="container">
   <div class="column">
     <div class="row" style="margin-top: 70px;">
       <div>
+        <?php if (isset($_SESSION['username'])): ?>
+          <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-success">
+            <i class="bi bi-plus-lg me-2"></i> Add Project
+          </button>
+        <?php endif; ?>
+        <div id="addProject" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <?php include 'add.php'; ?>
+          </div>
+        </div>
         <table class="table">
           <hr>
-          <form action="" method="GET"> <!-- Adjust the action URL accordingly -->
+          <form action="" method="GET">
             <div class="form-group">
               <label for="name">Name:</label>
               <input type="text" id="name" class="form-control" name="projectName" placeholder="Project Name">
             </div>
             <div class="form-group">
               <label for="created_by">Created By:</label>
-              <input type="text" id="created_by" name="createdBy" class="form-control" placeholder="Created By"> <!-- Optional filter -->
+              <input type="text" id="created_by" name="createdBy" class="form-control" placeholder="Created By">
             </div>
             <button type="submit" class="btn btn-outline-info">Filter</button>
           </form>
-
-          <div id="addProject" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-              <?php include 'add.php'; ?>
-            </div>
-          </div>
-
           <table class="table">
             <thead>
               <tr>
@@ -57,11 +62,7 @@ $rows = $db->query($sql);
                 <th scope="col">Created by</th>
                 <th scope="col">Created at</th>
                 <th></th>
-                <th>
-                    <?php if (isset($_SESSION['username'])): ?>
-                        <button type="button" data-target="#addProject" data-toggle="modal" class="btn btn-outline-success">Add Project</button>
-                    <?php endif; ?>
-                </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -107,18 +108,20 @@ $rows = $db->query($sql);
                               '<?php echo htmlspecialchars($row['description']); ?>',
                               '<?php echo htmlspecialchars($row['created_by']); ?>'
                           )">
-                              Edit
+                              <i class="bi bi-pencil me-2"></i> Edit
                           </button>
                       <?php endif; ?>
                   </td>
                   <td>
-                      <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
-                          <form action="../../controllers/projectController.php" method="POST">
-                              <input type="hidden" name="action" value="delete">
-                              <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                              <input type="submit" class="btn btn-danger" value="Delete">
-                          </form>
-                      <?php endif; ?>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+                      <form action="../../controllers/projectController.php" method="POST">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                      </form>
+                    <?php endif; ?>
                   </td>
                 </tr>
               <?php endwhile; ?>
@@ -142,21 +145,6 @@ $rows = $db->query($sql);
     document.getElementById('editProjectName').value = name;
     document.getElementById('editProjectDescription').value = description;
     document.getElementById('editProjectCreatedBy').value = created_by;
-
-    // let tasks = JSON.parse(tasksJson);
-
-    // let tasksContainer = document.getElementById('editProjectTasks');
-    // tasksContainer.innerHTML = '';
-
-    // if (tasks.length > 0) {
-    //   tasks.forEach(task => {
-    //     let taskElement = document.createElement('p');
-    //     taskElement.textContent = task.title;
-    //     tasksContainer.appendChild(taskElement);
-    //   });
-    // } else {
-    //   tasksContainer.textContent = 'No tasks found for this project.';
-    // }
   }
 </script>
 <?php include '../footer.php'; ?>

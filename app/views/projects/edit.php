@@ -26,37 +26,3 @@ include '../../models/db.php';
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
   </div>
 </div>
-
-<script>
-  // function createArrayFromDiv() {
-  //   const div = document.getElementById('editProjectTasks');
-    
-  //   const paragraphs = div.getElementsByTagName('p');
-
-  //   const itemList = [];
-
-  //   for (let p of paragraphs) {
-  //     itemList.push(p.textContent);
-  //   }
-
-  //   return itemList; 
-  // }
-
-  // const selectedTasks = createArrayFromDiv();
-
-  // // Function to set selected options
-  // function setSelectedTasks() {
-  //   const selectElement = document.getElementById('taskSelect');
-  //   const options = selectElement.options;
-
-  //   for (let i = 0; i < options.length; i++) {
-  //     // Check if itemsArray includes the option text
-  //     if (selectedTasks.includes(options[i].text)) {
-  //       options[i].selected = true; // Set as selected if found
-  //     }
-  //   }
-  // }
-
-  // // Call the function after the DOM is loaded
-  // document.addEventListener('DOMContentLoaded', setSelectedTasks);
-</script>

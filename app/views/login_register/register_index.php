@@ -51,7 +51,6 @@
     </div>
 </div>
 
-<!-- Terms & Conditions Modal -->
 <div class="modal fade" id="t_and_c_m" tabindex="-1" aria-labelledby="t_and_c_m_label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -61,7 +60,6 @@
             </div>
             <div class="modal-body">
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique, itaque, modi, aliquam nostrum...</p>
-                <!-- Add more terms here as needed -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">I Agree</button>
@@ -71,7 +69,6 @@
 </div>
 
 <script>
-    // Ensure DOM is loaded before accessing elements
     document.addEventListener("DOMContentLoaded", function () {
         var password = document.getElementById("password");
         var confirm_password = document.getElementById("confirm_password");
@@ -84,7 +81,6 @@
             }
         }
 
-        // Add event listeners for real-time validation
         password.addEventListener('change', validatePassword);
         confirm_password.addEventListener('keyup', validatePassword);
     });

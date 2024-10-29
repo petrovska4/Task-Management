@@ -1,8 +1,7 @@
 <?php 
-session_start(); // Start session to access error messages
+session_start();
 include_once "../header.php"; 
 
-// Retrieve and clear the login error from the session
 $errorMessage = isset($_SESSION['login_error']) ? $_SESSION['login_error'] : '';
 unset($_SESSION['login_error']);
 ?>
@@ -43,10 +42,6 @@ unset($_SESSION['login_error']);
                                 <div class="invalid-feedback">Please enter your password.</div>
                             <?php endif; ?>
                         </div>
-                        <!-- <div class="form-check mb-3">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember" value="1">
-                            <label class="form-check-label" for="remember">Remember me</label>
-                        </div> -->
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">Log In</button>
                             <a href="register_index.php" class="btn btn-outline-success btn-lg">Sign Up</a>
@@ -62,7 +57,6 @@ unset($_SESSION['login_error']);
 </div>
 
 <script>
-    // Bootstrap validation for form fields
     (function () {
         'use strict';
         document.addEventListener('DOMContentLoaded', function () {

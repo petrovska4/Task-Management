@@ -1,15 +1,13 @@
 <?php
 session_start();
-require '../../models/db.php'; // Include database connection
+require '../../models/db.php';
 include '../header.php';
 
-// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
-// Get user information from the database
 $user_id = $_SESSION['user_id'];
 $stmt = $db->prepare("SELECT first_name, last_name, username, email FROM user WHERE id = ?");
 $stmt->bind_param("i", $user_id);
@@ -26,7 +24,6 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {

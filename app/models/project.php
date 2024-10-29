@@ -37,7 +37,7 @@ function delete_project($project_id) {
     $statement = $db->prepare($query);
     $statement->bind_param('i', $project_id); 
     if (!$statement->execute()) {
-      echo "Error: " . $statement->error; // Print error if execution fails
+      echo "Error: " . $statement->error;
     }
     $statement->close();
 }
@@ -48,7 +48,6 @@ function add_project($name, $description, $created_by, $file_path) {
               VALUES (?, ?, ?, ?)';
     $statement = $db->prepare($query);
     $statement->bind_param('ssis', $name, $description, $created_by, $file_path);
-    //$statement->execute();
     if (!$statement->execute()) {
       echo "Error: " . $statement->error;
   }

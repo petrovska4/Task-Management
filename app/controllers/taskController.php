@@ -8,16 +8,11 @@ require_once(__DIR__ . '/../../send_email.php');
 
 $action = filter_input(INPUT_POST, 'action');
 
-// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-//     var_dump($_POST);  // This will show the submitted form data
-// }
-
 class taskController {
 
     public function index() {
         session_start();
 
-    // ako ne si logiran te nosi tuka
     if (!isset($_SESSION['username'])) {
         echo $_SESSION['username'];
         header("Location: app/views/login_register/login_index.php");
@@ -37,8 +32,8 @@ if($action == 'add') {
     $project_id = $_POST['project'];
     $assigned_to = $_POST['assigned_to'];
 
-    if(taskLibrary::validateDates($due_date) == false) {
-        echo "Invalid date.";
+    if (!TaskLibrary::validateDates($due_date)) {
+        $_SESSION['error_message'] = 'Invalid due date. Please select a future date.';
         header("Location: ../views/tasks/index.php");
         exit;
     }
@@ -81,8 +76,8 @@ if($action == 'add') {
     $project_id = $_POST['project'];
     $assigned_to = $_POST['assigned_to'];
 
-    if(!taskLibrary::validateDates($due_date)) {
-        echo "Invalid date.";
+    if (!TaskLibrary::validateDates($due_date)) {
+        $_SESSION['error_message'] = 'Invalid due date. Please select a future date.';
         header("Location: ../views/tasks/index.php");
         exit;
     }
@@ -92,60 +87,49 @@ if($action == 'add') {
     header("Location: ../views/tasks/index.php");
 
 } elseif ($action == 'filter') {
-    // Debugging output
-    echo "<pre>";
-    print_r($_GET); // Print the filter parameters
-    echo "</pre>";
 
-    // Get filter inputs
     $taskName = filter_input(INPUT_GET, 'taskName', FILTER_SANITIZE_STRING);
     $dueDate = filter_input(INPUT_GET, 'dueDate', FILTER_SANITIZE_STRING);
     $priority = filter_input(INPUT_GET, 'priority', FILTER_SANITIZE_STRING);
 
-    // Start with the base SQL query
     $sql = "SELECT * FROM task WHERE 1=1";
     $params = [];
-    $types = ''; // String to hold types of the parameters
+    $types = '';
 
-    // Add conditions based on user inputs
     if (!empty($taskName)) {
         $sql .= " AND title LIKE ?";
-        $params[] = "%$taskName%"; // Add parameter
-        $types .= 's'; // 's' for string
+        $params[] = "%$taskName%";
+        $types .= 's';
     }
 
     if (!empty($dueDate)) {
         $sql .= " AND due_date = ?";
-        $params[] = $dueDate; // Add parameter
-        $types .= 's'; // 's' for string
+        $params[] = $dueDate;
+        $types .= 's';
     }
 
     if (!empty($priority)) {
         $sql .= " AND status = ?";
-        $params[] = $priority; // Add parameter
-        $types .= 's'; // 's' for string
+        $params[] = $priority;
+        $types .= 's';
     }
 
-    // Prepare the statement
     $statement = $db->prepare($sql);
     if (!empty($params)) {
-        $statement->bind_param($types, ...$params); // Bind parameters
+        $statement->bind_param($types, ...$params);
     }
 
-    // Execute the statement
     if (!$statement->execute()) {
-        echo "SQL error: " . $statement->error; // Debugging output
+        echo "SQL error: " . $statement->error;
     } else {
-        $result = $statement->get_result(); // Get the result set
-        $rows = $result->fetch_all(MYSQLI_ASSOC); // Fetch rows
+        $result = $statement->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
 
-        // Check if there are rows
         if (empty($rows)) {
             echo "No tasks found.";
         }
 
-        // You can now pass $rows to the view that displays tasks
-        include '../views/tasks/index.php'; // Adjust this path as necessary
-        exit; // Exit after including the view
+        include '../views/tasks/index.php';
+        exit;
     }
 } else echo "fail";

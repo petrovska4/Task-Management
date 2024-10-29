@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require '../models/db.php';  // Adjust path as necessary
+    require '../models/db.php';
 
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);

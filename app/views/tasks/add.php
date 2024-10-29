@@ -21,7 +21,7 @@
         <input type="datetime-local" required name="due_date" class="form-control">
         <label>Project</label>
         <select required name="project" class="form-control">
-          <option value="" disabled selected>Select a project</option> <!-- Optional placeholder -->
+          <option value="" disabled selected>Select a project</option>
           <?php
           while ($project = $projects->fetch_assoc()) { ?>
               <option value="<?php echo $project['id']; ?>"><?php echo htmlspecialchars($project['name']); ?></option>
@@ -29,7 +29,7 @@
         </select>
         <label>Assign to</label>
         <select required name="assigned_to" class="form-control">
-          <option value="" disabled selected>Assign to</option> <!-- Optional placeholder -->
+          <option value="" disabled selected>Assign to</option>
           <?php
           while ($user = $users->fetch_assoc()) { ?>
               <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['username']); ?></option>

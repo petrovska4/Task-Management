@@ -6,7 +6,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    // $remember = isset($_POST['remember']);
 
     $stmt = $db->prepare("SELECT id, username, password, role, email FROM user WHERE username = ?");
     if (!$stmt) {
@@ -20,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->fetch(); 
 
     if (password_verify($password, $hashed_password)) {
-        session_regenerate_id(true); // Avoid session fixation
+        session_regenerate_id(true);
 
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $user_name;

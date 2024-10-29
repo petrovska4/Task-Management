@@ -58,15 +58,8 @@ function edit_task($task_id, $title, $description, $status, $priority, $due_date
     
     $statement = $db->prepare($query);
     
-    // Bind parameters
     $statement->bind_param('ssssssii', $title, $description, $status, $priority, $due_date, $project_id, $assigned_to, $task_id);
     
-    // Execute the statement
-    if ($statement->execute()) {
-        // You might want to handle successful edit here, if needed
-    }
-    
-    // Close the statement
     $statement->close();
 }
 

@@ -2,15 +2,13 @@
 include '../../models/db.php'; 
 include '../../models/project.php'; 
 include '../../models/user.php';
-session_start(); // Start the session
+session_start();
 
-// Get filter parameters from the GET request
 $taskName = filter_input(INPUT_GET, 'taskName', FILTER_SANITIZE_STRING);
 $dueDate = filter_input(INPUT_GET, 'dueDate', FILTER_SANITIZE_STRING);
-$priority = filter_input(INPUT_GET, 'priority', FILTER_SANITIZE_STRING); // Changed from status to priority
+$priority = filter_input(INPUT_GET, 'priority', FILTER_SANITIZE_STRING);
 
-// Build the SQL query with filters
-$sql = "SELECT * FROM task WHERE 1=1"; // 1=1 makes it easier to append conditions
+$sql = "SELECT * FROM task WHERE 1=1";
 
 if ($taskName) {
     $sql .= " AND title LIKE '%" . $db->real_escape_string($taskName) . "%'";
@@ -18,11 +16,11 @@ if ($taskName) {
 if ($dueDate) {
     $sql .= " AND due_date = '" . $db->real_escape_string($dueDate) . "'";
 }
-if ($priority) { // Changed from status to priority
+if ($priority) {
     $sql .= " AND priority = '" . $db->real_escape_string($priority) . "'";
 }
 
-$rows = $db->query($sql); // Execute the filtered query
+$rows = $db->query($sql);
 ?>
 
 <?php
@@ -32,10 +30,16 @@ $projects = $db->query($sql2);
 $sql3 = "SELECT username, id FROM user";
 $users = $db->query($sql3);
 
+if (isset($_SESSION['error_message'])) {
+    echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error_message'] . '</div>';
+    unset($_SESSION['error_message']);
+}
+
 ?>
 
 <?php include '../header.php'; ?>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <div class="container">
@@ -43,12 +47,14 @@ $users = $db->query($sql3);
         <div class="row" style="margin-top: 70px;">
             <div>
             <?php
-            if (isset($_SESSION['role'])){
-                echo'<button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">Add Task</button>';
-            }
+                if (isset($_SESSION['role'])){
+                    echo '<button type="button" data-target="#addTask" data-toggle="modal" class="btn btn-success">
+                    <i class="bi bi-plus-lg"></i> Add Task
+                    </button>';
+                }
             ?>
                 <hr>
-                <form action="" method="GET"> <!-- Submit to the same page -->
+                <form action="" method="GET">
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" id="name" class="form-control" name="taskName" placeholder="Task Name" value="<?php echo htmlspecialchars($taskName); ?>">
@@ -58,7 +64,7 @@ $users = $db->query($sql3);
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                    <i class="fa fa-calendar-alt"></i> <!-- Font Awesome icon -->
+                                    <i class="fa fa-calendar-alt"></i>
                                 </span>
                             </div>
                             <input type="datetime-local" id="date_time" name="dueDate" class="form-control" value="<?php echo htmlspecialchars($dueDate); ?>">
@@ -67,7 +73,7 @@ $users = $db->query($sql3);
 
                     <div class="form-group">
                         <label for="priority">Priority:</label>
-                        <select id="priority" class="form-control" name="priority"> <!-- Changed from status to priority -->
+                        <select id="priority" class="form-control" name="priority">
                             <option value="">Select Priority</option>
                             <option value="Low" <?php echo ($priority == 'Low') ? 'selected' : ''; ?>>Low</option>
                             <option value="Medium" <?php echo ($priority == 'Medium') ? 'selected' : ''; ?>>Medium</option>
@@ -137,7 +143,7 @@ $users = $db->query($sql3);
                                             } elseif ($row['priority'] == 'High') {
                                                 echo '#ff8a65';
                                             } else {
-                                                echo 'transparent'; // Default color if none matches
+                                                echo 'transparent';
                                             } 
                                         ?>;">
                                         <?php echo htmlspecialchars($row['priority']); ?>
@@ -154,15 +160,17 @@ $users = $db->query($sql3);
                                                 '<?php echo htmlspecialchars($row['due_date']); ?>',
                                                 <?php echo $row['project_id']; ?>, 
                                                 <?php echo $row['assigned_to']; ?>
-                                            )">Edit</button>
+                                            )"><i class="bi bi-pencil me-2"></i> Edit</button>
                                         <?php endif; ?>
                                     </td>
                                     <td> 
                                         <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
                                             <form action="../../controllers/taskController.php" method="POST">
-                                                <input type="hidden" name="action" value="delete">
-                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </button>
                                             </form>
                                         <?php endif; ?>
                                     </td>
