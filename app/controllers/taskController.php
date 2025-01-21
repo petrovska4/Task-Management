@@ -89,7 +89,6 @@ if($action == 'add') {
 } elseif ($action == 'filter') {
 
     $taskName = filter_input(INPUT_GET, 'taskName', FILTER_SANITIZE_STRING);
-    $dueDate = filter_input(INPUT_GET, 'dueDate', FILTER_SANITIZE_STRING);
     $priority = filter_input(INPUT_GET, 'priority', FILTER_SANITIZE_STRING);
 
     $sql = "SELECT * FROM task WHERE 1=1";
@@ -99,12 +98,6 @@ if($action == 'add') {
     if (!empty($taskName)) {
         $sql .= " AND title LIKE ?";
         $params[] = "%$taskName%";
-        $types .= 's';
-    }
-
-    if (!empty($dueDate)) {
-        $sql .= " AND due_date = ?";
-        $params[] = $dueDate;
         $types .= 's';
     }
 

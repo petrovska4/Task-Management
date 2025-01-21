@@ -4,7 +4,7 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h2 class="text-center mb-4">Sign Up <small class="text-muted">It's free and always will be.</small></h2>
+                    <h2 class="text-center mb-4">Sign Up</h2>
                     <form action="../../controllers/register.php" method="post" name="registration_form">
                         <div class="row mb-3">
                             <div class="col-md-6">

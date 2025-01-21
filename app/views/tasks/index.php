@@ -59,17 +59,6 @@ if (isset($_SESSION['error_message'])) {
                         <label for="name">Name:</label>
                         <input type="text" id="name" class="form-control" name="taskName" placeholder="Task Name" value="<?php echo htmlspecialchars($taskName); ?>">
                     </div>
-                    <div class="form-group">
-                        <label for="date_time">Date and Time:</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-calendar-alt"></i>
-                                </span>
-                            </div>
-                            <input type="datetime-local" id="date_time" name="dueDate" class="form-control" value="<?php echo htmlspecialchars($dueDate); ?>">
-                        </div>
-                    </div>
 
                     <div class="form-group">
                         <label for="priority">Priority:</label>
